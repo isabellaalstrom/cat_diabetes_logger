@@ -1,7 +1,7 @@
 name: Cat Diabetes Logger
 slug: cat_diabetes_logger
-description: Minimal .NET add-on with ingress
-version: "2026.01"
+description: A logger for diabetic cat on Senvelgo
+version: "2026.01.1"
 
 arch:
   - amd64
@@ -14,6 +14,8 @@ ingress: true
 ingress_port: 8080
 panel_title: Cat Diabetes
 panel_icon: mdi:cat
+
+homeassistant_api: true
 
 map:
   - addon_config:rw
