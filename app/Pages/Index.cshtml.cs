@@ -204,7 +204,7 @@ public class IndexModel : PageModel
             .Any(l => DateOnly.FromDateTime(l.LoggedAt) == today && l.SenvelgoGiven == true);
     }
 
-    public async Task<IActionResult> OnGetAsync(int? deleteId, bool saved = false)
+    public async Task<IActionResult> OnGetAsync(int? deleteId)
     {
         // Hantera delete via GET parameter
         if (deleteId.HasValue)
@@ -223,7 +223,6 @@ public class IndexModel : PageModel
             return RedirectToPage();
         }
 
-        Saved = saved;
         LoadHistory();
         return Page();
     }
@@ -289,7 +288,9 @@ public class IndexModel : PageModel
         // Skicka till Home Assistant
         await _homeAssistant.SendLogToHomeAssistant(log);
 
-        // Redirect efter POST för att undvika duplicering
-        return RedirectToPage(new { saved = true });
+        // Visa sidan igen UTAN redirect för att undvika iframe-problem
+        Saved = true;
+        LoadHistory();
+        return Page();
     }
 }
