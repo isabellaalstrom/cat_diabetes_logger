@@ -1,0 +1,771 @@
+@page
+@model CatDiabetesLogger.Pages.IndexModel
+
+@using CatDiabetesLogger.Models;
+@using CatDiabetesLogger.Extensions;
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cat Diabetes Logger</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            margin: 1rem 0;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            color: #2c3e50;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin: 1.5rem 0 0.5rem;
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #f5c6cb;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .warning-message {
+            background: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #ffeaa7;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        form {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        form.delete-form {
+            background: none;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+            margin: 0;
+            display: inline;
+        }
+
+        fieldset {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        fieldset.disabled {
+            opacity: 0.6;
+            pointer-events: none;
+            background: #f9f9f9;
+        }
+
+        fieldset.hidden {
+            display: none;
+        }
+
+        legend {
+            font-weight: 600;
+            color: #2c3e50;
+            padding: 0 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        label:has(input[type="checkbox"]) {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="time"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-top: 0.25rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="time"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        input[type="checkbox"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 1rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        button[type="submit"]:hover {
+            background: #2980b9;
+        }
+
+        button[type="submit"]:active {
+            transform: scale(0.98);
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-left: 0.5rem;
+            width: auto;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .history {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .day-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .day-summary h4 {
+            margin: 0 0 0.75rem 0;
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .summary-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .summary-section strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .summary-section div {
+            font-size: 1rem;
+        }
+
+        .summary-values {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .summary-badge {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .measurement-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .measurement-row span {
+            opacity: 0.85;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+        }
+
+        ul li {
+            background: #fafafa;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            border-left: 3px solid #3498db;
+            line-height: 1.8;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        ul li strong {
+            color: #2c3e50;
+            margin-right: 0.5rem;
+        }
+
+        .log-details {
+            font-size: 0.95rem;
+            color: #555;
+            flex: 1;
+        }
+
+        .log-actions {
+            flex-shrink: 0;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e0e0e0;
+            margin: 2rem 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 2rem;
+            font-style: italic;
+        }
+
+        /* Tablet and up */
+        @@media (min-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+
+            h1 {
+                font-size: 2.25rem;
+            }
+
+            form:not(.delete-form) {
+                padding: 2rem;
+            }
+
+            .history {
+                padding: 2rem;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐱 Cat Diabetes Logger</h1>
+
+        @if (Model.Saved)
+        {
+            <div class="success-message">
+                ✔ Sparat!
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="error-message">
+                ⚠️ @Model.ErrorMessage
+            </div>
+        }
+
+
+        <form method="post">
+
+            @if (Model.SenvelgoAlreadyGivenToday)
+            {
+                <div class="warning-message">
+                    ℹ️ Senvelgo har redan givits idag
+                </div>
+            }
+            <fieldset class="@(Model.SenvelgoAlreadyGivenToday ? "hidden" : "")">
+                <legend>💊 Senvelgo</legend>
+
+                <label>
+                    <input type="checkbox" id="SenvelgoGiven" name="SenvelgoGiven" value="true" disabled="@Model.SenvelgoAlreadyGivenToday" />
+                    Givet
+                </label>
+
+                <label for="SenvelgoTime">
+                    Tid (valfri)
+                    <input type="time" id="SenvelgoTime" name="SenvelgoTime" />
+                </label>
+
+                <label for="SenvelgoIntake">
+                    Hur mycket fick han i sig?
+                    <select id="SenvelgoIntake" name="SenvelgoIntake">
+                        <option value="">– ej angivet –</option>
+                        @foreach (var v in Enum.GetValues<SenvelgoIntakeEstimate>())
+                        {
+                            <option value="@v">@v.GetDisplayName()</option>
+                        }
+                    </select>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>😺 Allmänt</legend>
+
+                <label for="Appetite">
+                    Aptit
+                    <select id="Appetite" name="Appetite">
+                        <option value="">– ej angivet –</option>
+                        @foreach (var v in Enum.GetValues<AppetiteLevel>())
+                        {
+                            <option value="@v">@v.GetDisplayName()</option>
+                        }
+                    </select>
+                </label>
+
+                <label for="Thirst">
+                    Törst
+                    <select id="Thirst" name="Thirst">
+                        <option value="">– ej angivet –</option>
+                        @foreach (var v in Enum.GetValues<ThirstLevel>())
+                        {
+                            <option value="@v">@v.GetDisplayName()</option>
+                        }
+                    </select>
+                </label>
+
+                <label for="GeneralState">
+                    Allmäntillstånd
+                    <select id="GeneralState" name="GeneralState">
+                        <option value="">– ej angivet –</option>
+                        @foreach (var v in Enum.GetValues<GeneralState>())
+                        {
+                            <option value="@v">@v.GetDisplayName()</option>
+                        }
+                    </select>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>🚽 Låda och kräkning</legend>
+
+                <label for="Stool">
+                    Bajs
+                    <select id="Stool" name="Stool">
+                        <option value="">– ej angivet –</option>
+                        @foreach (var v in Enum.GetValues<StoolQuality>())
+                        {
+                            <option value="@v">@v.GetDisplayName()</option>
+                        }
+                    </select>
+                </label>
+
+                <label for="Urination">
+                    Kiss
+                    <select id="Urination" name="Urination">
+                        <option value="">– ej angivet –</option>
+                        @foreach (var v in Enum.GetValues<UrinationLevel>())
+                        {
+                            <option value="@v">@v.GetDisplayName()</option>
+                        }
+                    </select>
+                </label>
+
+                <label>
+                    <input type="checkbox" id="Vomiting" name="Vomiting" value="true" />
+                    Kräkts
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>🔬 Mätvärden</legend>
+
+                <label for="BloodGlucose">
+                    Blodglukos (mmol/L)
+                    <input type="number" step="0.1" id="BloodGlucose" name="BloodGlucose" />
+                </label>
+
+                <label for="KetoneValue">
+                    Ketoner (mmol/L)
+                    <input type="number" step="0.1" id="KetoneValue" name="KetoneValue" />
+                </label>
+
+                <label for="WeightKg">
+                    Vikt (kg)
+                    <input type="number" step="0.1" id="WeightKg" name="WeightKg" />
+                </label>
+            </fieldset>
+
+            <label for="Comment">
+                💬 Kommentar
+                <textarea id="Comment" name="Comment" rows="3"></textarea>
+            </label>
+
+            <button type="submit">Spara logg</button>
+        </form>
+
+        <hr />
+
+        <div class="history">
+            <h2>📋 Historik</h2>
+
+            @if (!Model.GroupedLogs.Any())
+            {
+                <p class="empty-state">Inga loggar ännu.</p>
+            }
+            else
+            {
+                @foreach (var day in Model.GroupedLogs)
+                {
+                    var summary = Model.DailySummaries.First(s => s.Date == day.Date);
+
+                    <h3>@day.Date.ToString("yyyy-MM-dd") (@summary.LogCount loggar)</h3>
+
+                    <div class="day-summary">
+                        <h4>📊 Dagens sammanfattning</h4>
+                        
+                        <div class="summary-grid">
+                            @if (summary.SenvelgoGiven)
+                            {
+                                <div class="summary-section">
+                                    <strong>💊 Senvelgo</strong>
+                                    <div>
+                                        Givet @(summary.LastSenvelgoTime.HasValue ? $"kl {summary.LastSenvelgoTime.Value:HH:mm}" : "")
+                                    </div>
+                                    @if (summary.SenvelgoIntakes.Any())
+                                    {
+                                        <div class="summary-values">
+                                            @foreach (var intake in summary.SenvelgoIntakes)
+                                            {
+                                                <span class="summary-badge">@intake.GetDisplayName()</span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            @if (summary.AppetiteLevels.Any())
+                            {
+                                <div class="summary-section">
+                                    <strong>🍽 Aptit</strong>
+                                    <div class="summary-values">
+                                        @foreach (var level in summary.AppetiteLevels)
+                                        {
+                                            <span class="summary-badge">@level.GetDisplayName()</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (summary.ThirstLevels.Any())
+                            {
+                                <div class="summary-section">
+                                    <strong>💧 Törst</strong>
+                                    <div class="summary-values">
+                                        @foreach (var level in summary.ThirstLevels)
+                                        {
+                                            <span class="summary-badge">@level.GetDisplayName()</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (summary.GeneralStates.Any())
+                            {
+                                <div class="summary-section">
+                                    <strong>😺 Allmäntillstånd</strong>
+                                    <div class="summary-values">
+                                        @foreach (var state in summary.GeneralStates)
+                                        {
+                                            <span class="summary-badge">@state.GetDisplayName()</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (summary.UrinationLevels.Any())
+                            {
+                                <div class="summary-section">
+                                    <strong>🚽 Kiss</strong>
+                                    <div class="summary-values">
+                                        @foreach (var level in summary.UrinationLevels)
+                                        {
+                                            <span class="summary-badge">@level.GetDisplayName()</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (summary.StoolQualities.Any())
+                            {
+                                <div class="summary-section">
+                                    <strong>💩 Bajs</strong>
+                                    <div class="summary-values">
+                                        @foreach (var quality in summary.StoolQualities)
+                                        {
+                                            <span class="summary-badge">@quality.GetDisplayName()</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (summary.VomitingOccurred)
+                            {
+                                <div class="summary-section">
+                                    <strong>🤮 Kräkning</strong>
+                                    <div>Förekommit under dagen</div>
+                                </div>
+                            }
+
+                            @if (summary.BloodGlucoseReadings.Any())
+                            {
+                                <div class="summary-section">
+                                    <strong>🩸 Blodglukos (mmol/L)</strong>
+                                    <div class="measurement-row">
+                                        <span>Min:</span> <strong>@summary.MinGlucose?.ToString("F1")</strong>
+                                    </div>
+                                    <div class="measurement-row">
+                                        <span>Max:</span> <strong>@summary.MaxGlucose?.ToString("F1")</strong>
+                                    </div>
+                                    <div class="measurement-row">
+                                        <span>Medel:</span> <strong>@summary.AvgGlucose?.ToString("F1")</strong>
+                                    </div>
+                                    @if (summary.BloodGlucoseReadings.Count > 1)
+                                    {
+                                        <div style="margin-top: 0.25rem; font-size: 0.85rem; opacity: 0.8;">
+                                            @summary.BloodGlucoseReadings.Count mätningar
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            @if (summary.KetoneReadings.Any())
+                            {
+                                <div class="summary-section">
+                                    <strong>🧪 Ketoner (mmol/L)</strong>
+                                    <div class="measurement-row">
+                                        <span>Min:</span> <strong>@summary.MinKetones?.ToString("F1")</strong>
+                                    </div>
+                                    <div class="measurement-row">
+                                        <span>Max:</span> <strong>@summary.MaxKetones?.ToString("F1")</strong>
+                                    </div>
+                                    <div class="measurement-row">
+                                        <span>Medel:</span> <strong>@summary.AvgKetones?.ToString("F1")</strong>
+                                    </div>
+                                    @if (summary.KetoneReadings.Count > 1)
+                                    {
+                                        <div style="margin-top: 0.25rem; font-size: 0.85rem; opacity: 0.8;">
+                                            @summary.KetoneReadings.Count mätningar
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            @if (summary.WeightReadings.Any())
+                            {
+                                <div class="summary-section">
+                                    <strong>⚖️ Vikt (kg)</strong>
+                                    @if (summary.WeightReadings.Count == 1)
+                                    {
+                                        <div>@summary.LastWeight?.ToString("F1") kg</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="measurement-row">
+                                            <span>Min:</span> <strong>@summary.MinWeight?.ToString("F1")</strong>
+                                        </div>
+                                        <div class="measurement-row">
+                                            <span>Max:</span> <strong>@summary.MaxWeight?.ToString("F1")</strong>
+                                        </div>
+                                        <div class="measurement-row">
+                                            <span>Senast:</span> <strong>@summary.LastWeight?.ToString("F1")</strong>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <ul>
+                    @foreach (var log in day.Logs)
+                    {
+                        <li>
+                            <div class="log-details">
+                                <strong>@log.LoggedAt.ToString("HH:mm")</strong>
+                                
+                                @if (log.SenvelgoGiven == true)
+                                {
+                                    <span>💊 Senvelgo</span>
+                                    @if (log.SenvelgoGivenAt is not null)
+                                    {
+                                        <span> kl @log.SenvelgoGivenAt.Value.ToString("HH:mm")</span>
+                                    }
+                                    @if (log.SenvelgoIntake is not null)
+                                    {
+                                        <span> (@log.SenvelgoIntake.Value.GetDisplayName())</span>
+                                    }
+                                }
+
+                                @if (log.Appetite is not null)
+                                {
+                                    <span>🍽 Aptit: @log.Appetite.Value.GetDisplayName()</span>
+                                }
+
+                                @if (log.Thirst is not null)
+                                {
+                                    <span>💧 Törst: @log.Thirst.Value.GetDisplayName()</span>
+                                }
+
+                                @if (log.GeneralState is not null)
+                                {
+                                    <span>😺 Allmänt: @log.GeneralState.Value.GetDisplayName()</span>
+                                }
+
+                                @if (log.Urination is not null)
+                                {
+                                    <span>🚽 Kiss: @log.Urination.Value.GetDisplayName()</span>
+                                }
+
+                                @if (log.Stool is not null)
+                                {
+                                    <span>💩 Bajs: @log.Stool.Value.GetDisplayName()</span>
+                                }
+
+                                @if (log.Vomiting == true)
+                                {
+                                    <span>🤮 Kräkts</span>
+                                }
+
+                                @if (log.BloodGlucose is not null)
+                                {
+                                    <span>🩸 Glukos: @log.BloodGlucose</span>
+                                }
+
+                                @if (log.KetoneValue is not null)
+                                {
+                                    <span>🧪 Ketoner: @log.KetoneValue</span>
+                                }
+
+                                @if (log.WeightKg is not null)
+                                {
+                                    <span>⚖️ Vikt: @log.WeightKg kg</span>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(log.Comment))
+                                {
+                                    <br /><span>💬 @log.Comment</span>
+                                }
+                            </div>
+                                <div class="log-actions">
+                                    <a href="?deleteId=@log.Id" class="delete-btn" onclick="return confirm('Är du säker på att du vill ta bort denna logg?')">🗑️</a>
+                                </div>
+                        </li>
+                    }
+                    </ul>
+                }
+            }
+        </div>
+    </div>
+</body>
+</html>

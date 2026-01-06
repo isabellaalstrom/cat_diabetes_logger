@@ -1,0 +1,19 @@
+name: Cat Diabetes Logger
+slug: cat_diabetes_logger
+description: Minimal .NET add-on with ingress
+version: "0.1.0"
+
+arch:
+  - amd64
+  - aarch64
+
+startup: services
+boot: auto
+
+ingress: true
+ingress_port: 8080
+panel_title: Cat Diabetes
+panel_icon: mdi:cat
+
+map:
+  - addon_config:rw
