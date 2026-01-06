@@ -1,22 +1,25 @@
-﻿# 🐱 Cat Diabetes Logger
+# 🐱 Cat Diabetes Logger for Senvelgo
 
-Ett Home Assistant Addon för att logga och övervaka diabetes-behandling med Senvelgo för katter.
+A Home Assistant add-on for logging and monitoring diabetes treatment with Senvelgo for cats.
 
-## 📋 Beskrivning
+## 📋 Description
 
-Cat Diabetes Logger är en webbapplikation speciellt designad för att logga och följa kattens diabetesbehandling. Applikationen gör det enkelt att registrera medicin, mätvärden, allmäntillstånd och skapar automatiskt dagliga sammanfattningar.
-Applikationen utvecklas för eget bruk.
+Cat Diabetes Logger is a web application specifically designed to log and track a cat’s diabetes treatment with Senvelgo (not insulin). The application makes it easy to record medication, measurements, and general condition, and it automatically generates daily summaries.  
+The application is developed for personal use, however if others find it useful I will take PRs and -maybe- feature requests.
 
-### Huvudfunktioner
+### Key Features
 
-- 🩺 **Medicin-loggning**: Registrera Senvelgo-doser med tidsstämpel och intag
-- 📊 **Mätvärden**: Spåra blodglukos, ketoner och vikt
-- 😺 **Allmäntillstånd**: Logga aptit, törst och allmänt välbefinnande  
-- 🚽 **Eliminering**: Övervaka kiss, bajs och kräkningar
-- 📈 **Dagliga sammanfattningar**: Automatiska sammanställningar per dag med min/max/medelvärden
-- 📱 **Mobilanpassad**: Responsiv design optimerad för mobil användning
-- 🗑️ **Redigering**: Ta bort felaktiga loggar enkelt
+- 🩺 **Medication logging**: Record Senvelgo doses with timestamp and administration
+- 📊 **Measurements**: Track blood glucose, ketones, and weight
+- 😺 **General condition**: Log appetite, thirst, and overall well-being  
+- 🚽 **Elimination**: Monitor urination, bowel movements, and vomiting
+- 📈 **Daily summaries**: Automatic daily summaries with min/max/average values
+- 📱 **Mobile-friendly**: Responsive design optimized for mobile use
+- 🗑️ **Editing**: Easily delete incorrect logs
 
-## 🚀 Planering
-- **Integration med Home Assistant**: Skicka in värden i HA för att kunna se statistik bl.a.
-- **Utdrag**: Gör utdrag i .csv som sedan kan öppnas i tex Google Sheets.
+## 🚀 Roadmap
+- **Home Assistant integration**: Send values to HA to enable statistics and insights
+- **Exports**: Export data to .csv for use in tools such as Google Sheets
+- **Translation**: I could make an engelish translation if others want to use this
+- **Several cats**: Add capabilities for more than one cat
+- **Other medication tracking**: Add tracking for insulin as well, and maybe bexacat
