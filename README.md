@@ -5,7 +5,7 @@ A Home Assistant add-on for logging and monitoring diabetes treatment with Senve
 ## 📋 Description
 
 Cat Diabetes Logger is a web application specifically designed to log and track a cat’s diabetes treatment with Senvelgo (not insulin). The application makes it easy to record medication, measurements, and general condition, and it automatically generates daily summaries.  
-The application is developed for personal use, however if others find it useful I will take PRs and -maybe- feature requests.
+The application is developed for personal use, however I might take PRs. Language is only Swedish right now.
 
 ### Key Features
 
