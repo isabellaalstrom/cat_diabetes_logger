@@ -20,6 +20,6 @@ The application is developed for personal use, however I might take PRs. Languag
 ## 🚀 Roadmap
 - **Home Assistant integration**: Send values to HA to enable statistics and insights
 - **Exports**: Export data to .csv for use in tools such as Google Sheets
-- **Translation**: I could make an engelish translation if others want to use this
+- **Translation**: Might add English translation if others would want to use this
 - **Several cats**: Add capabilities for more than one cat
 - **Other medication tracking**: Add tracking for insulin as well, and maybe bexacat
